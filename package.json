@@ -1,0 +1,23 @@
+{
+  "name": "@openease/ros-clients",
+  "version": "1.0.0",
+  "description": "Websocket connection to server-side ROS.",
+  "author": "Daniel Beßler",
+  "license": "LGPL-3.0-or-later",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Warning: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ease-crc/ros-js-clients"
+  },
+  "bugs": {
+    "url": "https://github.com/ease-crc/ros-js-clients/issues"
+  },
+  "homepage": "https://github.com/ease-crc/ros-js-clients#readme",
+  "dependencies": {
+    "ros3d": "git://github.com/RobotWebTools/ros3djs.git#develop"
+  }
+}
+
