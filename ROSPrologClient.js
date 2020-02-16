@@ -16,8 +16,7 @@ module.exports = function(ros, options){
 
     return text;
   };
-
-  var qid = that.makeid();
+  this.qid = that.makeid();
   
   this.jsonQuery = function(query, callback, mode) {
       queryMode = mode || 0;
@@ -30,7 +29,7 @@ module.exports = function(ros, options){
       // send query
       var request = new ROSLIB.ServiceRequest({
         mode : queryMode,  // 1->INCREMENTAL, 0->ALL
-        id : qid,
+        id : that.qid,
         query : query
       });
       client.callService(request, function(result) {
@@ -38,11 +37,11 @@ module.exports = function(ros, options){
           that.nextQuery(callback);
         }
         else {
-          callback({ status: "QUERY_FAILED", service: "simple_query", error: result });
+          callback({ status: "QUERY_FAILED", error: result });
           that.finishClient();
         }
       }, function(error) {
-          callback({ status: "QUERY_FAILED", service: "simple_query", error: error });
+          callback({ status: "QUERY_FAILED", error: error });
           that.finishClient();
       });
   };
@@ -55,7 +54,7 @@ module.exports = function(ros, options){
       serviceType : 'json_prolog/PrologNextSolution'
     });
     // send query
-    var request = new ROSLIB.ServiceRequest({id : qid});
+    var request = new ROSLIB.ServiceRequest({id : that.qid});
     client.callService(request, function(result) {
       // status = NO_SOLUTION
       if (result.status == 0 && result.solution == "") {
@@ -96,10 +95,10 @@ module.exports = function(ros, options){
           var ret = parseSolution(solution, 0, "");
         }
 
-        callback({ value: ret, solution: solution, solution_raw: result.solution });
+        callback({ status: "OK", value: ret, solution: solution, solution_raw: result.solution });
       }
     }, function(error) {
-        callback({ status: "QUERY_FAILED", service: "next_solution", error: error });
+        callback({ status: "QUERY_FAILED", error: error });
         that.finishClient();
     });
 
@@ -112,7 +111,7 @@ module.exports = function(ros, options){
       serviceType : 'json_prolog/PrologFinish'
     });
     request = new ROSLIB.ServiceRequest({
-      id : qid
+      id : that.qid
     });
     client.callService(request, function(e) { });
     that.finished = true;
