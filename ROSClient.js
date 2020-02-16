@@ -47,7 +47,9 @@ module.exports = function(options){
           that.ros = undefined;
           that.isRegistered = false;
           if(on_close) on_close();
-          setTimeout(that.connect, 500);
+          setTimeout(function() {
+              that.connect(on_connection,on_error,on_close);
+          }, 500);
       });
       that.ros.on('error', function(error) {
           console.log('Error connecting to websocket server: ', error);
@@ -55,7 +57,9 @@ module.exports = function(options){
           that.ros = undefined;
           that.isRegistered = false;
           if(on_close) on_error(error);
-          setTimeout(that.connect, 500);
+          setTimeout(function() {
+              that.connect(on_connection,on_error,on_close);
+          }, 500);
       });
     };
 
