@@ -66,7 +66,7 @@ MarkerArrayClient.prototype.processMessage = function(arrayMessage){
         updated = marker.update(message);
         if(!updated) { // "REMOVE"
           node.unsubscribeTf();
-          that.canvas.removeMarker(marker,node);
+          that.canvas.rosViewer.removeMarker(marker,node);
           delete that.markers[markerName];
         }
       }
@@ -87,7 +87,7 @@ MarkerArrayClient.prototype.processMessage = function(arrayMessage){
           object : newMarker
         });
         this.markers[markerName] = [newMarker,newNode];
-        that.canvas.addMarker(newMarker,newNode);
+        that.canvas.rosViewer.addMarker(newMarker,newNode);
       }
     }
     else if(message.action === 1) { // "DEPRECATED"
@@ -98,7 +98,7 @@ MarkerArrayClient.prototype.processMessage = function(arrayMessage){
       var marker = markerItem[0];
       var node   = markerItem[1];
       node.unsubscribeTf();
-      canvas.removeMarker(marker,node);
+      canvas.rosViewer.removeMarker(marker,node);
       delete that.markers[markerName];
     }
     else if(message.action === 3) { // "DELETE ALL"
@@ -106,7 +106,7 @@ MarkerArrayClient.prototype.processMessage = function(arrayMessage){
           var marker = markerItem[0];
           var node   = markerItem[1];
           node.unsubscribeTf();
-          canvas.removeMarker(marker,node);
+          canvas.rosViewer.removeMarker(marker,node);
         }
         that.markers = {};
     }
